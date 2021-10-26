@@ -3,48 +3,40 @@ import PropTypes from "prop-types";
 
 export default function TextForm(props) {
   const handleUpClick = () => {
-    console.log("Uppercase was clicked" + text);
     let newText = text.toUpperCase();
     setText(newText);
-    props.showAlert("All capitalized", "success")
+    props.showAlert("All capitalized", "success");
   };
   const handleRe1Change = (e1) => {
-    console.log("R1 ");
     settR1(e1.target.value);
   };
   const handleRe2Change = (e1) => {
-    console.log("R2 ");
     settR2(e1.target.value);
   };
 
   const handledownClick = () => {
-    console.log("Uppercase was clicked" + text);
     let newText = text.toLowerCase();
     setText(newText);
   };
   const handledelClick = () => {
-    console.log("delete was clicked ");
     setText("");
   };
   const handleWSClick = () => {
-    // console.log("Uppercase was clicked" + text );
+    
     let newText = text.trim();
     setText(newText);
   };
   const handleOnChange = (event) => {
-    console.log("On change ");
+    
     setText(event.target.value);
   };
   const handleReplaceClick = () => {
-    console.log("replace was clicked");
     let newText = text.replace(tR1, tR2);
     setText(newText);
   };
-  const handleCopy = () => {
-    console.log("replace was clicked");
-    var text = document.getElementById("exampleFormControlTextarea1");
-    text.select();
-    navigator.clipboard.writeText(text.value);
+  const handleCopy = () => {   
+    navigator.clipboard.writeText(text);
+    props.showAlert("Text Copied", "success")
   };
   const [text, setText] = useState("");
   const [tR1, settR1] = useState("");
@@ -52,7 +44,9 @@ export default function TextForm(props) {
   return (
     <>
       <div>
-        <h1 style={{color:props.mode==='dark'?'white':'black'}}>{props.heading}</h1>
+        <h1 style={{ color: props.mode === "dark" ? "white" : "black" }}>
+          {props.heading}
+        </h1>
         <div className="mb-3">
           <textarea
             className="form-control"
@@ -60,25 +54,58 @@ export default function TextForm(props) {
             onChange={handleOnChange}
             id="exampleFormControlTextarea1"
             rows="8"
-            style={{backgroundColor:props.mode==='dark'?'grey':'white',color:props.mode==='dark'?'white':'black'}}            
+            style={{
+              backgroundColor: props.mode === "dark" ? "#13466e" : "white",
+              color: props.mode === "dark" ? "white" : "black",
+            }}
           ></textarea>
         </div>
         <div className="container">
-          <button className={`btn btn-${props.mode==="dark"?'dark':'primary'} mx-2`} onClick={handleUpClick} >
+          <button
+            className={`btn btn-${
+              props.mode === "dark" ? "dark" : "primary"
+            } mx-2 my-1`}
+            disabled={text.length === 0}
+            onClick={handleUpClick}
+          >
             Convert to uppercase
           </button>
-          <button className={`btn btn-${props.mode==="dark"?'dark':'primary'} mx-2`} onClick={handledownClick}>
+          <button
+            className={`btn btn-${
+              props.mode === "dark" ? "dark" : "primary"
+            } mx-2 my-1`}
+            disabled={text.length === 0}
+            onClick={handledownClick}
+          >
             Convert to lowercase
           </button>
-          <button className={`btn btn-${props.mode==="dark"?'dark':'primary'} mx-2`} onClick={handledelClick}>
+          <button
+            className={`btn btn-${
+              props.mode === "dark" ? "dark" : "primary"
+            } mx-2 my-1`}
+            disabled={text.length === 0}
+            onClick={handledelClick}
+          >
             Delete Text
           </button>
-          <button className={`btn btn-${props.mode==="dark"?'dark':'primary'} mx-2`} onClick={handleWSClick}>
+          <button
+            className={`btn btn-${
+              props.mode === "dark" ? "dark" : "primary"
+            } mx-2 my-1`}
+            disabled={text.length === 0}
+            onClick={handleWSClick}
+          >
             Delete White Spaces
           </button>
-          <button className={`btn btn-${props.mode==="dark"?'dark':'primary'} mx-2`}onClick={handleCopy}>
+          <button
+            className={`btn btn-${
+              props.mode === "dark" ? "dark" : "primary"
+            } mx-2 my-1`}
+            disabled={text.length === 0}
+            onClick={handleCopy}
+          >
             Copy text
-            </button>
+          </button>
         </div>
         <div className="container " align="right" margin-right="30">
           <input
@@ -88,7 +115,10 @@ export default function TextForm(props) {
             onChange={handleRe1Change}
             id="exampleFormControlinput1"
             rows="1"
-            style={{backgroundColor:props.mode==='dark'?'grey':'white'}}
+            style={{
+              backgroundColor: props.mode === "dark" ? "grey" : "white",
+            }}
+            disabled={text.length === 0}
           ></input>
           <input
             type="search"
@@ -97,10 +127,16 @@ export default function TextForm(props) {
             onChange={handleRe2Change}
             id="exampleFormControlinput2"
             rows="1"
-            style={{backgroundColor:props.mode==='dark'?'grey':'white'}}
+            style={{
+              backgroundColor: props.mode === "dark" ? "grey" : "white",
+            }}
+            disabled={text.length === 0}
           ></input>
           <button
-            className={`btn btn-${props.mode==="dark"?'dark':'primary'} mx-3`}
+            className={`btn btn-${
+              props.mode === "dark" ? "dark" : "primary"
+            } mx-3 my-1`}
+            disabled={text.length === 0}
             onClick={handleReplaceClick}
           >
             Replace Word
@@ -108,17 +144,36 @@ export default function TextForm(props) {
         </div>
       </div>
 
-      <div className="container my-3" style={{color:props.mode==='dark'?'white':'black'}}>
-        <h2 >Your Text Summary</h2>
-        <p >
-          <b>{text.split(" ").length-1}</b> words and<b> {text.length}</b>{" "}
-          characters
+      <div
+        className="container my-3"
+        style={{ color: props.mode === "dark" ? "white" : "black" }}
+      >
+        <h2>Your Text Summary</h2>
+        <p>
+          <b>
+            {
+              text.split(/\s+/).filter((element) => {
+                return element.length !== 0;
+              }).length
+            }
+          </b>{" "}
+          words and<b> {text.length}</b> characters
         </p>
-        <p >
-          <b>{text.split(" ").length-1<1?'0.000':.008 * text.split(" ").length}</b> Minutes
+        <p>
+          <b>
+            {text.split(" ").length - 1 < 1
+              ? "0.000"
+              : 0.008 *
+                text.split(" ").filter((element) => {
+                  return element.length !== 0;
+                }).length}
+          </b>{" "}
+          Minutes
         </p>
-        <h2 >Preview Text</h2>
-        <p>{text.length>0?text:"Enter something above to preview here"}</p>
+        <h2>Preview Text</h2>
+        <p>
+          {text.length > 0 ? text : "Enter something above to preview here"}
+        </p>
       </div>
     </>
   );

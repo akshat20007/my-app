@@ -4,11 +4,11 @@ import Navbar from "./components/Navbar";
 import TextForm from "./components/TextForm";
 import Alert from "./components/Alert";
 import React, { useState } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 function App() {
   const [mode, setMode] = useState("light");
-  const [newstate, setNewstate] = useState("light");
+  // const [newstate, setNewstate] = useState("light");
   const [alert, setAlert] = useState(null);
 
   const showAlert = (message, type) => {
@@ -38,7 +38,7 @@ function App() {
       setMode("dark");
       document.body.style.backgroundColor = "#02240a";
       showAlert("Green mode was enabled", "success");
-      console.log("new toggle");
+      
     } else {
       setMode("light");
       document.body.style.backgroundColor = "white";
@@ -50,7 +50,7 @@ function App() {
       <Router>
         <Navbar
           title="TextUtils"
-          aboutText="About Text"
+          aboutText="About"
           mode={mode}
           toggleMode={toggleMode}
           toggleNewMode={toggleNewMode}
@@ -58,7 +58,7 @@ function App() {
         <Alert alert={alert} />
         <div className="container my-3">
           <Switch>
-            <Route path="/about">
+            <Route path="/About">
               <About
                 mode={mode}
                 toggleMode={toggleMode}
